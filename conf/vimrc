@@ -1,0 +1,9 @@
+set number
+set showmode
+set autoindent
+set nocompatible
+set ts=4
+set expandtab
+set showmatch
+set cursorline
+set wildmenu
