@@ -13,7 +13,9 @@ yum --enablerepo=remi-php72 -y  install php php-fpm php-mcrypt php-mbstring php-
 yum install -y mysql mysql-server
 
 
+# 配置
 cp -f conf/my.conf  /etc/my.cnf
+cp -f conf/www.conf /etc/php-fpm.d/www.conf
 
 
 
@@ -64,11 +66,10 @@ echo -e "\033[44;37m 服务已经开启 \033[0m"
 
 
 #配置
-cp -f conf/www.conf /etc/php-fpm.d/www.conf
 
 # Mysql密码
 echo 'mysql root password'
-str=`grep 'temporary password' /var/log/mysqld.log`
+str=`grep 'temporary password' /data/log/mysqld.log`
 pwd=${str##*: }
 
 echo "mysql pwd: ${pwd}"
