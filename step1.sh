@@ -21,4 +21,4 @@ cp -f conf/vimrc      ~/.vimrc
 sed -i "s/HISTSIZE=1000/HISTSIZE=10/g" /etc/profile
 
 
-echo "依赖安装完毕"
+echo -e "\033[44;37m 依赖安装完毕 \033[0m"

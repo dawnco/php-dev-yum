@@ -13,6 +13,10 @@ yum --enablerepo=remi-php72 -y  install php php-fpm php-mcrypt php-mbstring php-
 yum install -y mysql mysql-server
 
 
+cp -f conf/my.conf  /etc/my.cnf
+
+
+
 systemctl enable php-fpm
 systemctl enable nginx
 systemctl enable redis
@@ -24,29 +28,11 @@ systemctl start redis
 systemctl start mysqld
 
 
-echo "环境安装完毕"
+echo -e "\033[44;37m 环境安装完毕 \033[0m"
+
 ################################################################
 
-#配置
-cp -f conf/www.conf /etc/php-fpm.d/www.conf
-cp -f conf/my.conf  /etc/my.cnf
 
-# 密码
-echo 'mysql root password'
-str=`grep 'temporary password' /var/log/mysqld.log`
-pwd=${str##*: }
-
-echo "mysql pwd: ${pwd}"
-echo "copy sql"
-cat <<EOF
-mysql -uroot -p'$pwd'
-
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Q,Fflgfye6w.1';
-FLUSH PRIVILEGES;
-
-EOF
-
-#mysql_secure_installation
 
 
 #nginx 配置
@@ -66,8 +52,7 @@ cp conf/nginx-server.conf  /etc/nginx/conf.d/phpMyAdmin.conf
 sed -i "s/PORT/8001/g"  /etc/nginx/conf.d/phpMyAdmin.conf
 sed -i "s/DOMAIN/phpMyAdmin/g"  /etc/nginx/conf.d/phpMyAdmin.conf
 
-
-echo "配置完毕"
+echo -e "\033[44;37m 配置完毕 \033[0m"
 
 
 # 重启服务
@@ -75,6 +60,24 @@ systemctl restart mysqld
 systemctl restart php-fpm
 systemctl restart nginx
 
+echo -e "\033[44;37m 服务已经开启 \033[0m"
 
-echo "服务已经开启"
+
+#配置
+cp -f conf/www.conf /etc/php-fpm.d/www.conf
+
+# Mysql密码
+echo 'mysql root password'
+str=`grep 'temporary password' /var/log/mysqld.log`
+pwd=${str##*: }
+
+echo "mysql pwd: ${pwd}"
+echo "copy sql"
+cat <<EOF
+mysql -uroot -p'$pwd'
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Q,Fflgfye6w.1';
+FLUSH PRIVILEGES;
+
+EOF
 
