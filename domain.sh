@@ -7,20 +7,29 @@
 echo -n "site domain or name:"
 read domain
 
-echo -n "port:"
+echo -n "port(default 80):"
 read port
 
-echo -n "SSL yes/no?"
+echo -n "ssl(yes/no, default no):"
 read ssl
-	
-mkdir -p /data/www/${domain}
 
-if [ "${ssl}" = "yes" ]; then
-    cp -f conf/nginx-server-ssl.conf  /etc/nginx/conf.d/${domain}.conf
-	echo "upload cert to /data/cert/${domain}.{key, pem}"
+
+if [ "${port}" = "" ]; then
+    port="80"
 fi
 
 if [ "${ssl}" = "" ]; then
+    ssl="no"
+fi
+
+mkdir -p /data/www/${domain}
+
+if [ "${ssl}" = "yes" ]; then
+    cp -f conf/nginx-server-ssl.conf  /etc/nginx/conf.d/${domain}-ssl.conf
+    echo "upload cert to /data/cert/${domain}.{key, pem}"
+fi
+
+if [ "${ssl}" = "no" ]; then
     cp -f conf/nginx-server.conf  /etc/nginx/conf.d/${domain}.conf
 fi
 
