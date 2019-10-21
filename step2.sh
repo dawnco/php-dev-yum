@@ -14,20 +14,31 @@ yum install -y mysql mysql-server
 
 
 # 配置
+
+mkdir -p /data/www/home
+mkdir /data/www/phpMyAdmin
+mkdir /data/soft 
+mkdir /data/cert 
+mkdir /data/log
+
+
 cp -f conf/my.conf  /etc/my.cnf
 cp -f conf/www.conf /etc/php-fpm.d/www.conf
 
+touch /data/log/redis.log
+chown redis:redis /data/log/redis.log
+cp -f conf/redis.conf /etc/redis.conf
 
 
 systemctl enable php-fpm
 systemctl enable nginx
 systemctl enable redis
-systemctl enable mysqld
+#systemctl enable mysqld
 
 systemctl start php-fpm
 systemctl start nginx
 systemctl start redis
-systemctl start mysqld
+#systemctl start mysqld
 
 
 echo -e "\033[44;37m 环境安装完毕 \033[0m"
@@ -40,18 +51,14 @@ echo -e "\033[44;37m 环境安装完毕 \033[0m"
 #nginx 配置
 sed -i "s#/var/log/nginx/error.log#/data/log/nginx-error.log#g" /etc/nginx/nginx.conf
 
-mkdir -p /data/www/home
-mkdir /data/www/phpMyAdmin
-mkdir /data/soft 
-mkdir /data/cert 
-mkdir /data/log
+
 
 
 wget https://files.phpmyadmin.net/phpMyAdmin/4.9.0.1/phpMyAdmin-4.9.0.1-all-languages.zip -O /data/soft/phpMyAdmin.zip
 unzip /data/soft/phpMyAdmin.zip -d /data/www/phpMyAdmin
 
 cp conf/nginx-server.conf  /etc/nginx/conf.d/phpMyAdmin.conf
-sed -i "s/PORT/8001/g"  /etc/nginx/conf.d/phpMyAdmin.conf
+sed -i "s/PORT/9111/g"  /etc/nginx/conf.d/phpMyAdmin.conf
 sed -i "s/DOMAIN/phpMyAdmin/g"  /etc/nginx/conf.d/phpMyAdmin.conf
 
 echo -e "\033[44;37m 配置完毕 \033[0m"
