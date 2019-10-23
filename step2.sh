@@ -30,6 +30,11 @@ touch /data/log/redis.log
 chown redis:redis /data/log/redis.log
 cp -f conf/redis.conf /etc/redis.conf
 
+touch /data/log/mysqld.log
+touch /data/log/mysql-slow.log
+chown mysql:mysql /data/log/mysqld.log
+chown mysql:mysql /data/log/mysql-slow.log
+
 
 systemctl enable php-fpm
 systemctl enable nginx
