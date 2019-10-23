@@ -24,6 +24,7 @@ mkdir /data/log
 
 cp -f conf/my.conf  /etc/my.cnf
 cp -f conf/www.conf /etc/php-fpm.d/www.conf
+sed -i "s/expose_php = On/expose_php = Off/g" /etc/php.ini
 
 touch /data/log/redis.log
 chown redis:redis /data/log/redis.log
